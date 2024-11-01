@@ -1,18 +1,26 @@
-#include <Arduino.h>
+// include
+#include <M5Stack.h>
 
-// put function declarations here:
-int myFunction(int, int);
+// global
+int count;
 
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+void setup()
+{
+  Serial.begin(115200); // シリアル通信初期化
+  M5.begin();           // M5本体セットアップ
+
+  // log
+  Serial.println("Setup complete.");
+  M5.Lcd.println("Setup complete.");
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-}
+void loop()
+{
+  Serial.println("aaa");
+  Serial.println("あああ");
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  Serial.println(count);
+  M5.Lcd.println(count);
+  count++;
+  delay(1000);
 }
