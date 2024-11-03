@@ -1,9 +1,11 @@
 // include
-#include <M5Stack.h>
+#include <M5Stack.h>      // M5本体
+#include <NimBLEDevice.h> // BLE
 
 // global
 int count;
 
+// setup
 void setup()
 {
   Serial.begin(115200); // シリアル通信初期化
@@ -14,13 +16,12 @@ void setup()
   M5.Lcd.println("Setup complete.");
 }
 
+// loop
 void loop()
 {
-  Serial.println("aaa");
-  Serial.println("あああ");
-
-  Serial.println(count);
-  M5.Lcd.println(count);
+  // log
+  Serial.println("loop count: " + String(count));
+  M5.Lcd.println("loop count: " + String(count));
   count++;
   delay(1000);
 }
