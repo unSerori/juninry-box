@@ -1,9 +1,26 @@
 // includes
+#include <M5Stack.h>      // M5本体
 #include <NimBLEDevice.h> // BLE
 #include <WiFi.h>
 #include "wifi_manager.h"
 
 // コールバック処理の定義
+
+// 接続時の処理
+void BLEClientConnectDisconnectCallbacks::onConnect(NimBLEServer *pServer)
+{
+    // log
+    Serial.println("Client connected.");
+    M5.Lcd.println("Client connected.");
+};
+
+// 切断時の処理
+void BLEClientConnectDisconnectCallbacks::onDisconnect(NimBLEServer *pServer)
+{
+    // log
+    Serial.println("Client disconnected.");
+    M5.Lcd.println("Client disconnected.");
+};
 
 // コールバック呼び出し側で受け取ったWiFiのSSIDを保存
 void WifiConnectSSIDCallbacks::onWrite(NimBLECharacteristic *pCharacteristic)
@@ -40,8 +57,8 @@ void initBLE()
     NimBLEDevice::setSecurityAuth(BLE_SM_PAIR_AUTHREQ_SC); // false false true // /*BLE_SM_PAIR_AUTHREQ_BOND | BLE_SM_PAIR_AUTHREQ_MITM |*/ BLE_SM_PAIR_AUTHREQ_SC
 
     // サーバーとして設定
-    pServer = NimBLEDevice::createServer();             // サーバーとして初期化
-    pServer->setCallbacks(new NimBLEServerCallbacks()); // 接続切断などのコールバック処理を設定
+    pServer = NimBLEDevice::createServer();                           // サーバーとして初期化
+    pServer->setCallbacks(new BLEClientConnectDisconnectCallbacks()); // 接続切断などのコールバック処理を設定 new NimBLEServerCallbacks()
 
     // サービスの設定
 
@@ -74,6 +91,7 @@ void initBLE()
 
     // log
     Serial.println("BLE server Setup complete.");
+    M5.Lcd.println("BLE server Setup complete.");
 };
 
 // マスク生成
@@ -109,37 +127,42 @@ IPAddress connectWifi()
 
             // log
             Serial.println("Waiting for input connection...");
+            M5.Lcd.println("Waiting for input connection...");
 
             // 揃うまで待機
             while (!isRequiredFieldsFilled)
             {
                 delay(1000);
                 Serial.println(".");
+                M5.Lcd.println(".");
             } // 揃ったら抜けてくる
             // 広告は必要ないので止める
             pAdvertising->stop();
 
             // log
             Serial.println("\n");
+            M5.Lcd.println("\n");
         }
 
         // ここから接続
 
         // 何らかの手段でセキュアに
-        std::string wifiMask = genWifiMask(pass.length());
-        for (int i = 0; i < pass.length() && i < wifiMask.length(); i++)
-            pass[i] ^= wifiMask[i];
+        // std::string wifiMask = genWifiMask(pass.length());
+        // for (int i = 0; i < pass.length() && i < wifiMask.length(); i++)
+        //     pass[i] ^= wifiMask[i];
 
         // 接続
         WiFi.mode(WIFI_MODE_STA);                   // モードをクライアント接続モードに変更
         WiFi.begin(ssid, pass);                     // 接続開始 // TODO: c_str()
         Serial.println("Connecting to WiFi AP..."); // msg
+        M5.Lcd.println("Connecting to WiFi AP..."); // msg
         // 結果確認
         while (WiFi.status() != WL_CONNECTED) // 未接続な間
         {
             delay(1000);
             tryCount--;
             Serial.println(".");
+            M5.Lcd.println(".");
 
             if (tryCount <= 0 | WiFi.status() == WL_CONNECT_FAILED) // 試行回数を使い切るか接続失敗するか
                 return IPAddress();                                 // 0.0.0.0

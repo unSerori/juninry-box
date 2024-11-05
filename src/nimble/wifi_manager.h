@@ -9,7 +9,7 @@
 
 // define
 #define WIFI_CONNECT_SERVICE_UUID "6b0b"
-#define WIFI_CONNECT_SSID_CHARACTERISTIC_UUID "6b0b"
+#define WIFI_CONNECT_SSID_CHARACTERISTIC_UUID "cf09"
 #define WIFI_CONNECT_PASS_CHARACTERISTIC_UUID "ee6a"
 #define TRY_COUNT 10 // 接続のループ
 
@@ -22,6 +22,14 @@ static String pass = "";
 static bool isRequiredFieldsFilled = false;
 
 // コールバック処理の定義
+
+// 接続時の処理
+class BLEClientConnectDisconnectCallbacks : public NimBLEServerCallbacks
+{
+public:
+    void onConnect(NimBLEServer *pServer);
+    void onDisconnect(NimBLEServer *pServer);
+};
 
 // コールバック呼び出し側で受け取ったWiFiのSSIDを保存
 class WifiConnectSSIDCallbacks : public NimBLECharacteristicCallbacks

@@ -18,13 +18,20 @@ int loopCount; // ループカウンター
 // setup
 void setup()
 {
-  Serial.begin(115200); // シリアル通信初期化
-  M5.begin();           // M5本体セットアップ
+  // log
+  Serial.println("Setup started.");
+  M5.Lcd.println("Setup started.");
+
+  // シリアル通信初期化
+  Serial.begin(115200);
+  // M5本体セットアップ
+  M5.begin();
 
   // BLE関連の初期化
   initBLE();
 
-  delay(10000);
+  Serial.println("BLE init complete.");
+  M5.Lcd.println("BLE init complete.");
 
   // WiFi接続
   IPAddress ip = connectWifi(); // WiFi接続された場合のIPを受け取る
