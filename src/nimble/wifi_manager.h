@@ -11,6 +11,7 @@
 #define WIFI_CONNECT_SERVICE_UUID "6b0b"
 #define WIFI_CONNECT_SSID_CHARACTERISTIC_UUID "cf09"
 #define WIFI_CONNECT_PASS_CHARACTERISTIC_UUID "ee6a"
+#define WIFI_CONNECT_OUCHI_UUID_CHARACTERISTIC_UUID "cce8"
 #define TRY_COUNT 10 // 接続のループ
 
 // global
@@ -19,6 +20,7 @@ static NimBLEService *pWifiConnectService; // サービス
 static NimBLEAdvertising *pAdvertising;    // 広告
 static String ssid = "";
 static String pass = "";
+static String ouchiUuid = "";
 static bool isRequiredFieldsFilled = false;
 
 // コールバック処理の定義
@@ -40,6 +42,13 @@ public:
 
 // コールバック呼び出し側で受け取ったWiFiのPASSを保存
 class WifiConnectPASSCallbacks : public NimBLECharacteristicCallbacks
+{
+public:
+    void onWrite(NimBLECharacteristic *pCharacteristic);
+};
+
+// コールバック呼び出し側で受け取ったouchiUUIDを保存
+class WifiConnectOuchiIdCallbacks : public NimBLECharacteristicCallbacks
 {
 public:
     void onWrite(NimBLECharacteristic *pCharacteristic);

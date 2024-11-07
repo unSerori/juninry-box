@@ -51,6 +51,13 @@ void WifiConnectPASSCallbacks::onWrite(NimBLECharacteristic *pCharacteristic)
     M5.Lcd.println("PASS: " + pass);
 };
 
+// コールバック呼び出し側で受け取ったouchiUUIDを保存
+void WifiConnectOuchiIdCallbacks::onWrite(NimBLECharacteristic *pCharacteristic)
+{
+    // 値を受け取る
+    ouchiUuid = pCharacteristic->getValue();
+}
+
 // BLEの初期化処理
 void initBLE()
 {
@@ -94,6 +101,14 @@ void initBLE()
     pPASSCharacteristic->setValue("Input PASS");                       // 初期値
     pPASSCharacteristic->setCallbacks(new WifiConnectPASSCallbacks()); // 到達時に実行する追加のカスタム処理をコールバック処理として設定
 
+    // OUCHI_UUID受信用のキャラクタリスティック
+    NimBLECharacteristic *pOuchiUuidCharacteristic = pWifiConnectService->createCharacteristic(
+        WIFI_CONNECT_OUCHI_UUID_CHARACTERISTIC_UUID, // このキャラクタリスティックのID
+        NIMBLE_PROPERTY::READ |
+            NIMBLE_PROPERTY::WRITE);                                           // サポートする機能 // NIMBLE_PROPERTY::READ, NIMBLE_PROPERTY::WRITE, NIMBLE_PROPERTY::NOTIFY
+    pOuchiUuidCharacteristic->setValue("Input OuchiUuid");                     // 初期値
+    pOuchiUuidCharacteristic->setCallbacks(new WifiConnectOuchiIdCallbacks()); // 到達時に実行する追加のカスタム処理をコールバック処理として設定  // 先に宣言しおいて&インスタンス名みたいに入れてもいい
+
     //  広告を準備
     pAdvertising = NimBLEDevice::getAdvertising();                // インスタンスを作成
     pAdvertising->addServiceUUID(pWifiConnectService->getUUID()); // サービスを登録
@@ -127,7 +142,7 @@ IPAddress connectWifiWithConfig()
     WiFi.mode(WIFI_MODE_STA);         // モードをクライアント接続モードに変更
     const char *incl_ssid = SSID;     // SSID取得
     const char *incl_pass = PASS;     // PASS取得
-    WiFi.begin(incl_ssid, incl_pass); // 接続開始 // TODO: c_str()
+    WiFi.begin(incl_ssid, incl_pass); // 接続開始
     while (WiFi.status() != WL_CONNECTED)
     {
         // log
@@ -160,6 +175,7 @@ IPAddress connectWifi()
         // 最初に値をリセット
         ssid = "";
         pass = "";
+        ouchiUuid = "";
         isRequiredFieldsFilled = false; // フラグ
         int tryCount = TRY_COUNT;       // 接続試行時の秒数
 
