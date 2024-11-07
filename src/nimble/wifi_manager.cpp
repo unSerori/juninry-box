@@ -157,8 +157,7 @@ IPAddress connectWifi()
         Serial.println("connectWiFi do while top."); // msg
         M5.Lcd.println("connectWiFi do while top."); // msg
 
-        Serial.print("1: ");
-        Serial.println(WiFi.status()); // 最初に値をリセット
+        // 最初に値をリセット
         ssid = "";
         pass = "";
         isRequiredFieldsFilled = false; // フラグ
@@ -167,8 +166,6 @@ IPAddress connectWifi()
         // どちらかが空の状態なら接続を待ち受ける
         if (ssid == "" || pass == "")
         {
-            Serial.print("2: ");
-            Serial.println(WiFi.status());
             pWifiConnectService->start();
             pAdvertising->start();
 
@@ -179,8 +176,6 @@ IPAddress connectWifi()
             // 揃うまで待機
             while (!isRequiredFieldsFilled)
             {
-                Serial.print("3: ");
-                Serial.println(WiFi.status());
                 delay(1000);
                 Serial.println(".");
                 M5.Lcd.println(".");
@@ -191,11 +186,8 @@ IPAddress connectWifi()
             // log
             Serial.println("\n");
             M5.Lcd.println("\n");
-        }
+        } // ここ抜けると接続できる状態
 
-        // ここから接続
-        Serial.print("4: ");
-        Serial.println(WiFi.status());
         // 何らかの手段でセキュアに？
 
         // 接続
@@ -207,18 +199,12 @@ IPAddress connectWifi()
         // 結果確認
         while (true) // 未接続な間、抜ける（返る）条件はエラーハンドルの前でif-breakで行う
         {
-            Serial.print("5: ");
-            Serial.println(WiFi.status());
             delay(1000);
             tryCount--;
-            Serial.println(".");
-            M5.Lcd.println(".");
 
             // それぞれの成功失敗にハンドル
             if (WiFi.status() == WL_CONNECTED)
             {
-                // 成功
-                Serial.println(WiFi.status());
                 // log
                 Serial.print("Connected WiFi AP!!: ");
                 Serial.println(WiFi.localIP());
@@ -254,44 +240,5 @@ IPAddress connectWifi()
                 continue; // 失敗したためもうちょい待つ
             }
         }
-
-        // // 結果確認
-        // while (WiFi.status() != WL_CONNECTED) // 未接続な間
-        // {
-        //     Serial.print("5: ");
-        //     Serial.println(WiFi.status());
-        //     delay(1000);
-        //     tryCount--;
-        //     Serial.println(".");
-        //     M5.Lcd.println(".");
-
-        //     // それぞれの失敗にハンドル
-        //     if (tryCount <= 0) // 試行回数を使い切るか、
-        //     {
-        //         // log
-        //         Serial.println("Failed to connect to WiFi AP, tryCount."); // msg
-        //         M5.Lcd.println("Failed to connect to WiFi AP, tryCount."); // msg
-
-        //         break; // 失敗したため接続受付に戻る
-        //     }
-        //     if (WiFi.status() == WL_CONNECT_FAILED) // 接続失敗するか
-        //     {
-        //         // log
-        //         Serial.println("Failed to connect to WiFi AP, status is WL_CONNECT_FAILED."); // msg
-        //         M5.Lcd.println("Failed to connect to WiFi AP, status is WL_CONNECT_FAILED."); // msg
-
-        //         continue; // 失敗したためもうちょい待つ
-
-        //     } // 成功
-        //     else
-        //     {
-        //         Serial.println(WiFi.status());
-        //         // log
-        //         Serial.println("Connected WiFi AP!!: " + WiFi.localIP()); // msg
-        //         M5.Lcd.println("Connected WiFi AP!!: " + WiFi.localIP()); // msg
-
-        //         return WiFi.localIP(); // return IPAddress(); // 0.0.0.0
-        //     }
-        // }
     } while (true);
 };
