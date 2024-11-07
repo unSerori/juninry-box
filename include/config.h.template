@@ -1,0 +1,6 @@
+// WiFi情報のテンプレートファイル
+// かならずコピーして原本は残すこと
+// KEY "exapmle_value:description"
+
+#define SSID "example_ssid:接続したいSSID"
+#define PASS "exapmle_pass:接続したいSSIDのパスワード"

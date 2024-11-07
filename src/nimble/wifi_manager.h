@@ -51,6 +51,9 @@ void initBLE();
 // マスク生成
 std::string genWifiMask(size_t len);
 
+// WiFI接続（ベタ書き）
+IPAddress connectWifiWithConfig();
+
 // WiFi接続
 IPAddress connectWifi();
 
