@@ -13,10 +13,8 @@
 #include <ESPping.h>
 #include "./nimble/wifi_manager.h"
 #include "servoc-control/servo-control.h"
-#include "./screen/screen.h"
 
-// ImageDisplayオブジェクトを作成
-ImageDisplay imageDisplay;
+
 // GPIOピン2、初期角度180度でサーボ制御オブジェクトを作成
 ServoControl servoControl(2, 180);
 // global
@@ -25,9 +23,6 @@ int loopCount; // ループカウンター
 // setup
 void setup()
 {
-  imageDisplay.begin();        // 初期化
-  imageDisplay.displayImage(); // 初期画像を表示
-
   servoControl.begin();//サーボ制御オブジェクトの初期化
 
   // log
