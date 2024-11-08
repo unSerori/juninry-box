@@ -12,13 +12,19 @@
 #include <NimBLEDevice.h> // BLE
 #include <ESPping.h>
 #include "./nimble/wifi_manager.h"
+#include "servoc-control/servo-control.h"
 
+
+// GPIOピン2、初期角度180度でサーボ制御オブジェクトを作成
+ServoControl servoControl(2, 180);
 // global
 int loopCount; // ループカウンター
 
 // setup
 void setup()
 {
+  servoControl.begin();//サーボ制御オブジェクトの初期化
+
   // log
   Serial.println("Setup started.");
   M5.Lcd.println("Setup started.");
@@ -33,6 +39,8 @@ void setup()
 
   Serial.println("BLE init complete.");
   M5.Lcd.println("BLE init complete.");
+
+  /////////////////////////////////////////////////////////////////////////
 
   // WiFi接続をどちらかでおこなう
   IPAddress ip = connectWifi(); // WiFi接続された場合のIPを受け取る
@@ -49,6 +57,8 @@ void setup()
     M5.Lcd.println("Failed ping."); // msg
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////
+
   // TODO: 保存
 
   // log
@@ -59,6 +69,8 @@ void setup()
 // loop
 void loop()
 {
+  servoControl.checkButtons(); // ボタンを確認してサーボを制御
+
   // TODO: ロングポーリング
 
   // log
