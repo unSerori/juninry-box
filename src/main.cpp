@@ -40,24 +40,24 @@ void setup()
   Serial.println("BLE init complete.");
   M5.Lcd.println("BLE init complete.");
 
-  ///////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////
 
-  // // WiFi接続をどちらかでおこなう
-  // IPAddress ip = connectWifi(); // WiFi接続された場合のIPを受け取る
-  // // IPAddress ip = connectWifiWithConfig(); // あらかじめ設定してあるIPで接続
-  // Serial.println(ip);
-  // if (Ping.ping("8.8.8.8"))
-  // {
-  //   Serial.println("ping ok!");
-  //   M5.Lcd.println("ping ok!");
-  // }
-  // else
-  // {
-  //   Serial.println("Failed ping."); // msg
-  //   M5.Lcd.println("Failed ping."); // msg
-  // }
+  // WiFi接続をどちらかでおこなう
+  IPAddress ip = connectWifi(); // WiFi接続された場合のIPを受け取る
+  // IPAddress ip = connectWifiWithConfig(); // あらかじめ設定してあるIPで接続
+  Serial.println(ip);
+  if (Ping.ping("8.8.8.8"))
+  {
+    Serial.println("ping ok!");
+    M5.Lcd.println("ping ok!");
+  }
+  else
+  {
+    Serial.println("Failed ping."); // msg
+    M5.Lcd.println("Failed ping."); // msg
+  }
 
-  ////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////
 
   // TODO: 保存
 
