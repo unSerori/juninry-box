@@ -12,7 +12,7 @@
 #define WIFI_CONNECT_SSID_CHARACTERISTIC_UUID "cf09"
 #define WIFI_CONNECT_PASS_CHARACTERISTIC_UUID "ee6a"
 #define WIFI_CONNECT_OUCHI_UUID_CHARACTERISTIC_UUID "cce8"
-#define TRY_COUNT 10 // 接続のループ
+#define TRY_COUNT 240 // 接続のループ
 
 // global
 static NimBLEServer *pServer;              // BLEサーバーのキャラクタリスティックの宣言

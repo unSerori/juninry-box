@@ -163,7 +163,7 @@ IPAddress connectWifi()
     // 切断しておく
     WiFi.disconnect(true);
 
-    // TODO: 保存済みか確認する
+    // TODO: 保存済みなら値を呼び出す
 
     // 値を受け取るまで無限ループで待ち受けて接続
     do
